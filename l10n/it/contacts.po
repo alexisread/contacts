@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-03-10 00:48-0400\n"
-"PO-Revision-Date: 2014-03-10 04:49+0000\n"
+"POT-Creation-Date: 2014-03-12 00:48-0400\n"
+"PO-Revision-Date: 2014-03-12 04:49+0000\n"
 "Last-Translator: I Robot\n"
 "Language-Team: Italian (http://www.transifex.com/projects/p/owncloud/language/it/)\n"
 "MIME-Version: 1.0\n"
@@ -95,88 +95,84 @@ msgstr "Aggiungi gruppo..."
 msgid "Invalid URL: \"{url}\""
 msgstr "URL non valido: \"{url}\""
 
-#: js/app.js:482
-msgid "There was an error opening a mail composer."
-msgstr "Si è verificato un errore durante l'apertura del compositore."
-
-#: js/app.js:487
+#: js/app.js:497
 msgid "Invalid email: \"{url}\""
 msgstr "Email non valida: \"{url}\""
 
-#: js/app.js:570
+#: js/app.js:580
 msgid "Merge failed. Cannot find contact: {id}"
 msgstr "Unione non riuscita. Impossibile trovare il contatto: {id}"
 
-#: js/app.js:583
+#: js/app.js:593
 msgid "Merge failed."
 msgstr "Unione non riuscita."
 
-#: js/app.js:590
+#: js/app.js:600
 msgid "Merge failed. Error saving contact."
 msgstr "Unione non riuscita. Errore durante il salvataggio del contatto."
 
-#: js/app.js:610
+#: js/app.js:620
 msgid "Select photo"
 msgstr "Seleziona la foto"
 
-#: js/app.js:690 js/app.js:1621
+#: js/app.js:700 js/app.js:1646
 msgid "Network or server error. Please inform administrator."
 msgstr "Errore di rete o del server. Informa l'amministratore."
 
-#: js/app.js:912
+#: js/app.js:922
 msgid "Error adding to group."
 msgstr "Errore durante l'aggiunta al gruppo."
 
-#: js/app.js:935
+#: js/app.js:945
 msgid "Error removing from group."
 msgstr "Errore durante la rimozione dal gruppo."
 
-#: js/app.js:1111
+#: js/app.js:1136
 msgid ""
 "You have selected over 300 contacts.\n"
 "This will most likely fail! Click here to try anyway."
 msgstr "Hai selezionato più di 300 contatti.\nL'operazione potrebbe non riuscire! Fai clic qui per provare comunque."
 
-#: js/app.js:1149
+#: js/app.js:1174
 msgid "Error setting {name} as favorite."
 msgstr "Errore durante l'impostazione di {name} come preferito."
 
-#: js/app.js:1287 js/app.js:1291 templates/contacts.php:171
+#: js/app.js:1312 js/app.js:1316 templates/contacts.php:171
 msgid "Merge contacts"
 msgstr "Unisci contatti"
 
-#: js/app.js:1313 js/app.js:1366 templates/contacts.php:357
+#: js/app.js:1338 js/app.js:1391 templates/contacts.php:357
 #: templates/contacts.php:358
 msgid "Cancel"
 msgstr "Annulla"
 
-#: js/app.js:1340 templates/contacts.php:152
+#: js/app.js:1365 templates/contacts.php:152
 msgid "Add group"
 msgstr "Aggiungi gruppo"
 
-#: js/app.js:1344
+#: js/app.js:1369
 msgid "OK"
 msgstr "OK"
 
-#: js/app.js:1447
+#: js/app.js:1472
 msgid "Could not find contact: {id}"
 msgstr "Impossibile trovare il contatto: {id}"
 
-#: js/app.js:1469
+#: js/app.js:1494
 msgid "No files selected for upload."
 msgstr "Nessun file selezionato per l'invio"
 
-#: js/app.js:1479
+#: js/app.js:1504
 msgid ""
 "The file you are trying to upload exceed the maximum size for file uploads "
 "on this server."
 msgstr "Il file che stai cercando di inviare supera la dimensione massima per l'invio dei file su questo server."
 
-#: js/app.js:1579
+#: js/app.js:1604
 msgid "Edit profile picture"
 msgstr "Modifica l'immagine del profilo"
 
-#: js/app.js:1583
+#: js/app.js:1608
 msgid "Crop photo"
 msgstr "Ritaglia foto"
 
@@ -301,7 +297,7 @@ msgstr "Chiudi"
 msgid "Server error! Please inform system administator"
 msgstr "Errore del server. Informa l'amministratore di sistema"
 
-#: js/storage.js:335 js/storage.js:374
+#: js/storage.js:341 js/storage.js:380
 msgid "Failed loading photo: {error}"
 msgstr "Caricamento foto non riuscito: {error}"
 
@@ -313,35 +309,35 @@ msgstr "Non hai i permessi per vedere questo contatto"
 msgid "Contact not found"
 msgstr "Contatto non trovato"
 
-#: lib/addressbook.php:202
+#: lib/addressbook.php:205
 msgid "You do not have permissions to see these contacts"
 msgstr "Non hai i permessi per vedere questi contatti"
 
-#: lib/addressbook.php:232
+#: lib/addressbook.php:235
 msgid "You do not have permissions add contacts to the address book"
 msgstr "Non hai i permessi per aggiungere contatti alla rubrica"
 
-#: lib/addressbook.php:236
+#: lib/addressbook.php:239
 msgid "The backend for this address book does not support adding contacts"
 msgstr "Il motore per questa rubrica non supporta l'aggiunta di contatti"
 
-#: lib/addressbook.php:265 lib/addressbook.php:296 lib/contact.php:248
+#: lib/addressbook.php:276 lib/addressbook.php:310 lib/contact.php:248
 msgid "You do not have permissions to delete this contact"
 msgstr "Non hai i permessi per eliminare questo contatto"
 
-#: lib/addressbook.php:269 lib/addressbook.php:300
+#: lib/addressbook.php:280 lib/addressbook.php:314
 msgid "The backend for this address book does not support deleting contacts"
 msgstr "Il motore per questa rubrica non supporta l'eliminazione di contatti"
 
-#: lib/addressbook.php:321
+#: lib/addressbook.php:335
 msgid "Unknown error"
 msgstr "Errore sconosciuto"
 
-#: lib/addressbook.php:365
+#: lib/addressbook.php:379
 msgid "The backend for this address book does not support updating"
 msgstr "Il motore per questa rubrica non supporta l'aggiornamento"
 
-#: lib/addressbook.php:393
+#: lib/addressbook.php:407
 msgid "You don't have permissions to delete the address book."
 msgstr "Non hai i permessi per eliminare la rubrica."
 
@@ -405,19 +401,19 @@ msgstr "Errore durante la creazione del contatto."
 
 #: lib/controller/addressbookcontroller.php:237
 msgid "Error creating contact"
-msgstr ""
+msgstr "Errore durante la creazione del contatto"
 
 #: lib/controller/addressbookcontroller.php:269
 msgid "Error deleting contact"
-msgstr ""
+msgstr "Errore durante l'eliminazione del contatto"
 
 #: lib/controller/addressbookcontroller.php:309
 msgid "Error retrieving contact"
-msgstr ""
+msgstr "Errore durante il recupero del contatto"
 
 #: lib/controller/addressbookcontroller.php:320
 msgid "Error saving contact"
-msgstr ""
+msgstr "Errore durante il salvataggio del contatto"
 
 #: lib/controller/addressbookcontroller.php:326
 msgid "Error removing contact from other address book."
@@ -425,7 +421,7 @@ msgstr "Errore durante la rimozione del contatto da altre rubriche."
 
 #: lib/controller/addressbookcontroller.php:333
 msgid "Error getting moved contact"
-msgstr ""
+msgstr "Errore durante il recupero del contatto spostato"
 
 #: lib/controller/contactcontroller.php:37
 #: lib/controller/contactcontroller.php:63
@@ -596,7 +592,7 @@ msgstr "Scrittura su disco non riuscita"
 #: lib/controller/importcontroller.php:65
 #, php-format
 msgid "Not enough storage available. %s available"
-msgstr ""
+msgstr "Spazio di archiviazione insufficiente. %s disponibile"
 
 #: lib/controller/importcontroller.php:73
 msgid "Attempt to upload blacklisted file:"
@@ -634,7 +630,7 @@ msgstr "Nessun contatto trovato in:"
 #: lib/controller/importcontroller.php:231
 #, php-format
 msgid "Imported %s"
-msgstr ""
+msgstr "Importati %s"
 
 #: lib/controller/settingscontroller.php:36
 msgid "No key is given."

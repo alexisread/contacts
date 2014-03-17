@@ -243,6 +243,7 @@ span.ui-icon { margin: 1px 3px 10px 0px; }
 	padding: 0; margin: 0; 
 	background-position: center;
 	background-size:contain;
+	display: inline-block;
 }
 
 .action:not(.add):not(.sort).text, .icon:not(.add):not(.sort).text, [class^="icon-"]:not(.add):not(.sort).text, [class*=" icon-"]:not(.add):not(.sort).text {
@@ -422,7 +423,10 @@ dt[data-element="org"] { margin-top: 4px; }
 .addressbooks-settings a.action:hover { opacity: 1; }
 .addressbooks-settings td.active, .addressbooks-settings td.action { width: 20px; }
 
-.addressbooklist .actions { position: absolute; right: 0px; }
+.addressbooklist .actions {
+	position: absolute; right: 0px;
+	display: inline-flex;
+}
 .addressbooklist .actions > a { width: 20px; height: 20px; }
 .addressbooklist > li > div {
 	display: inline-block;

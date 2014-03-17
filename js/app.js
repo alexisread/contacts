@@ -476,11 +476,21 @@ OC.Contacts = OC.Contacts || {
 					var regexp = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 					if(regexp.test(data.url)) {
 						console.log('success');
+						var url = 'mailto:' + data.url;
 						try {
-							window.location = 'mailto:' + data.url;
+							var mailer = window.open(url, 'Mailer');
 						} catch(e) {
-							alert(t('contacts', 'There was an error opening a mail composer.'));
+							console.log('There was an error opening a mail composer.', e);
 						}
+						setTimeout(function(){
+							try {
+								if(mailer.location.href === url || mailer.location.href.substr(0, 6) === 'about:') {
+									mailer.close();
+								}
+							} catch(e) {
+								console.log('There was an error opening a mail composer.', e);
+							}
+							}, 1000);
 					} else {
 						$(document).trigger('status.contacts.error', {
 							error: true,
@@ -633,7 +643,10 @@ OC.Contacts = OC.Contacts || {
 			$.each(result.contacts, function(idx, contactid) {
 				var contact = self.contacts.findById(contactid);
 
-				contact.removeFromGroup(result.groupname);
+				// Test if valid because there could be stale ids in the tag index.
+				if(contact) {
+					contact.removeFromGroup(result.groupname);
+				}
 			});
 		});
 
@@ -959,9 +972,24 @@ OC.Contacts = OC.Contacts || {
 			}
 		});
 
+		$(window).on('click', function(event) {
+			if(!$(event.target).is('a[href^="mailto"]')) {
+				return;
+			}
+			console.log('mailto clicked', $(event.target));
+
+			$(document).trigger('request.openurl', {
+				type: 'email',
+				url: $(event.target).attr('href').substr(7)
+			});
+
+			event.stopPropagation();
+			event.preventDefault();
+		});
+
 		// Contact list. Either open a contact or perform an action (mailto etc.)
 		this.$contactList.on('click', 'tr.contact', function(event) {
-			if($(event.target).is('input')) {
+			if($(event.target).is('input') || $(event.target).is('a[href^="mailto"]')) {
 				return;
 			}
 			// Select a single contact or a range of contacts.
