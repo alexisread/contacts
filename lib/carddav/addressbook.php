@@ -48,7 +48,8 @@ class AddressBook extends \Sabre_CardDAV_AddressBook {
 	*/
 	public function __construct(
 		\Sabre_CardDAV_Backend_Abstract $carddavBackend,
-		array $addressBookInfo) {
+		array $addressBookInfo
+	) {
 
 		$this->carddavBackend = $carddavBackend;
 		$this->addressBookInfo = $addressBookInfo;
@@ -90,7 +91,7 @@ class AddressBook extends \Sabre_CardDAV_AddressBook {
 		);
 
 		if($uid !== \OCP\User::getUser()) {
-			list($backendName, $id) = explode('::', $this->addressBookInfo['id']);
+			list(, $id) = explode('::', $this->addressBookInfo['id']);
 			$sharedAddressbook = \OCP\Share::getItemSharedWithBySource('addressbook', $id);
 			if($sharedAddressbook) {
 				if(($sharedAddressbook['permissions'] & \OCP\PERMISSION_CREATE)
@@ -141,7 +142,7 @@ class AddressBook extends \Sabre_CardDAV_AddressBook {
 
 	}
 
-	function getSupportedPrivilegeSet() {
+	public function getSupportedPrivilegeSet() {
 
 		return array(
 			'privilege'  => '{DAV:}all',

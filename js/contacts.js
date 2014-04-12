@@ -793,10 +793,14 @@ OC.Contacts = OC.Contacts || {};
 		$.when(this.storage.addContact(this.metadata.backend, this.metadata.parent))
 			.then(function(response) {
 			if(!response.error) {
-				self.id = String(response.data.metadata.id);
-				self.metadata = response.data.metadata;
-				self.data = response.data.data;
-				self.$groupSelect.multiselect('enable');
+				self.id = String(response.metadata.id);
+				self.metadata = response.metadata;
+				self.data = response.data;
+				console.log('Contact.add, groupprops', self.groupprops);
+				if(self.groupprops && self.groupprops.groups.length > 0) {
+					self._buildGroupSelect(self.groupprops.groups);
+					self.$groupSelect.multiselect('enable');
+				}
 				// Add contact to current group
 				if(self.groupprops
 					&& ['all', 'fav', 'uncategorized'].indexOf(self.groupprops.currentgroup.id) === -1
@@ -1075,6 +1079,84 @@ OC.Contacts = OC.Contacts || {};
 		return this.$listelem;
 	};
 
+	Contact.prototype._buildGroupSelect = function(availableGroups) {
+		var self = this;
+		this.$fullelem.find('.groupscontainer').show();
+		//this.$groupSelect.find('option').remove();
+		$.each(availableGroups, function(idx, group) {
+			var $option = $('<option value="' + group.id + '">' + group.name + '</option>');
+			if(self.inGroup(group.name)) {
+				$option.attr('selected', 'selected');
+			}
+			self.$groupSelect.append($option);
+		});
+		self.$groupSelect.multiselect({
+			header: false,
+			selectedList: 3,
+			noneSelectedText: self.$groupSelect.attr('title'),
+			selectedText: t('contacts', '# groups'),
+			minWidth: 300
+		});
+		self.$groupSelect.bind('multiselectclick', function(event, ui) {
+			var action = ui.checked ? 'addtogroup' : 'removefromgroup';
+			console.assert(typeof self.id === 'string', 'ID is not a string');
+			$(document).trigger('request.contact.' + action, {
+				id: self.id,
+				groupid: parseInt(ui.value)
+			});
+			if(ui.checked) {
+				self.addToGroup(ui.text);
+			} else {
+				self.removeFromGroup(ui.text);
+			}
+		});
+		if(!self.id || !self.hasPermission(OC.PERMISSION_UPDATE)) {
+			self.$groupSelect.multiselect('disable');
+		}
+	};
+
+	Contact.prototype._buildAddressBookSelect = function(availableAddressBooks) {
+		var self = this;
+		console.log('address books', availableAddressBooks.length, availableAddressBooks);
+		$.each(availableAddressBooks, function(idx, addressBook) {
+			//console.log('addressBook', idx, addressBook);
+			var $option = $('<option />')
+				.val(addressBook.getId())
+				.text(addressBook.getDisplayName() + '(' + addressBook.getBackend() + ')')
+				.data('backend', addressBook.getBackend())
+				.data('owner', addressBook.getOwner());
+			if(self.metadata.parent === addressBook.getId()
+				&& self.metadata.backend === addressBook.getBackend()) {
+				$option.attr('selected', 'selected');
+			}
+			self.$addressBookSelect.append($option);
+		});
+		self.$addressBookSelect.multiselect({
+			header: false,
+			multiple: false,
+			selectedList: 3,
+			noneSelectedText: self.$addressBookSelect.attr('title'),
+			minWidth: 300
+		});
+		self.$addressBookSelect.on('multiselectclick', function(event, ui) {
+			console.log('AddressBook select', ui);
+			self.$addressBookSelect.val(ui.value);
+			var opt = self.$addressBookSelect.find(':selected');
+			if(self.id) {
+				console.log('AddressBook', opt);
+				$(document).trigger('request.contact.move', {
+					contact: self,
+					from: {id:self.getParent(), backend:self.getBackend()},
+					target: {id:opt.val(), backend:opt.data('backend')}
+				});
+			} else {
+				self.setBackend(opt.data('backend'));
+				self.setParent(opt.val());
+				self.setOwner(opt.data('owner'));
+			}
+		});
+	};
+
 	/**
 	 * Render the full contact
 	 * @return A jquery object to be inserted in the DOM
@@ -1083,84 +1165,6 @@ OC.Contacts = OC.Contacts || {};
 		var self = this;
 		this.groupprops = groupprops;
 		
-		var buildGroupSelect = function(availableGroups) {
-			//this.$groupSelect.find('option').remove();
-			$.each(availableGroups, function(idx, group) {
-				var $option = $('<option value="' + group.id + '">' + group.name + '</option>');
-				if(self.inGroup(group.name)) {
-					$option.attr('selected', 'selected');
-				}
-				self.$groupSelect.append($option);
-			});
-			self.$groupSelect.multiselect({
-				header: false,
-				selectedList: 3,
-				noneSelectedText: self.$groupSelect.attr('title'),
-				selectedText: t('contacts', '# groups'),
-				minWidth: 300
-			});
-			self.$groupSelect.bind('multiselectclick', function(event, ui) {
-				var action = ui.checked ? 'addtogroup' : 'removefromgroup';
-				console.assert(typeof self.id === 'string', 'ID is not a string');
-				$(document).trigger('request.contact.' + action, {
-					id: self.id,
-					groupid: parseInt(ui.value)
-				});
-				if(ui.checked) {
-					self.addToGroup(ui.text);
-				} else {
-					self.removeFromGroup(ui.text);
-				}
-			});
-			if(!self.id || !self.hasPermission(OC.PERMISSION_UPDATE)) {
-				self.$groupSelect.multiselect('disable');
-			}
-		};
-		
-		var buildAddressBookSelect = function(availableAddressBooks) {
-			console.log('address books', availableAddressBooks.length, availableAddressBooks);
-			$.each(availableAddressBooks, function(idx, addressBook) {
-				//console.log('addressBook', idx, addressBook);
-				var $option = $('<option />')
-					.val(addressBook.getId())
-					.text(addressBook.getDisplayName() + '(' + addressBook.getBackend() + ')')
-					.data('backend', addressBook.getBackend())
-					.data('owner', addressBook.getOwner());
-				if(self.metadata.parent === addressBook.getId()
-					&& self.metadata.backend === addressBook.getBackend()) {
-					$option.attr('selected', 'selected');
-				}
-				self.$addressBookSelect.append($option);
-			});
-			self.$addressBookSelect.multiselect({
-				header: false,
-				multiple: false,
-				selectedList: 3,
-				noneSelectedText: self.$addressBookSelect.attr('title'),
-				minWidth: 300
-			});
-			self.$addressBookSelect.on('multiselectclick', function(event, ui) {
-				console.log('AddressBook select', ui);
-				self.$addressBookSelect.val(ui.value);
-				var opt = self.$addressBookSelect.find(':selected');
-				if(self.id) {
-					console.log('AddressBook', opt);
-					$(document).trigger('request.contact.move', {
-						contact: self,
-						from: {id:self.getParent(), backend:self.getBackend()},
-						target: {id:opt.val(), backend:opt.data('backend')}
-					});
-				} else {
-					self.setBackend(opt.data('backend'));
-					self.setParent(opt.val());
-					self.setOwner(opt.data('owner'));
-				}
-			});
-			if(self.id) {
-				//self.$addressBookSelect.multiselect('disable');
-			}
-		};
-
 		var values;
 		if(this.data) {
 			var n = this.getPreferredValue('N', ['', '', '', '', '']),
@@ -1197,6 +1201,8 @@ OC.Contacts = OC.Contacts || {};
 
 		this.$header = this.$fullelem.find('header');
 		this.$footer = this.$fullelem.find('footer');
+		this.$groupSelect = this.$fullelem.find('#contactgroups');
+		this.$addressBookSelect = this.$fullelem.find('#contactaddressbooks');
 
 		this.$fullelem.find('.tooltipped.rightwards.onfocus').tipsy({trigger: 'focus', gravity: 'w'});
 		this.$fullelem.on('submit', function() {
@@ -1204,16 +1210,14 @@ OC.Contacts = OC.Contacts || {};
 		});
 		
 		if(this.getOwner() === OC.currentUser && groupprops.groups.length > 0) {
-			this.$groupSelect = this.$fullelem.find('#contactgroups');
-			buildGroupSelect(groupprops.groups);
+			this._buildGroupSelect(groupprops.groups);
 		} else {
 			this.$fullelem.find('.groupscontainer').hide();
 		}
 		
 		var writeableAddressBooks = this.parent.addressBooks.selectByPermission(OC.PERMISSION_CREATE);
 		if(writeableAddressBooks.length > 1 && this.hasPermission(OC.PERMISSION_DELETE)) {
-			this.$addressBookSelect = this.$fullelem.find('#contactaddressbooks');
-			buildAddressBookSelect(writeableAddressBooks);
+			this._buildAddressBookSelect(writeableAddressBooks);
 		} else {
 			this.$fullelem.find('.addressbookcontainer').hide();
 		}
@@ -1321,7 +1325,9 @@ OC.Contacts = OC.Contacts || {};
 
 		var $bdayinput = this.$fullelem.find('[data-element="bday"]').find('input');
 		$bdayinput.datepicker({
-				dateFormat : datepickerFormatDate
+			dateFormat : datepickerFormatDate,
+			changeMonth: true,
+			changeYear: true
 		});
 		$bdayinput.attr('placeholder', $.datepicker.formatDate(datepickerFormatDate, new Date()));
 
@@ -1350,11 +1356,21 @@ OC.Contacts = OC.Contacts || {};
 				var $list = self.$fullelem.find('ul.' + name);
 				$list.removeClass('hidden');
 				var $property = self.renderStandardProperty(name);
+				$property.find('select[name="parameters[TYPE][]"]')
+					.combobox({
+					singleclick: true,
+					classes: ['propertytype', 'float', 'label']
+				});
 				$list.append($property);
 			});
 			var $list = self.$fullelem.find('ul.adr');
 			$list.removeClass('hidden');
 			var $property = self.renderAddressProperty(name);
+			$property.find('select[name="parameters[TYPE][]"]')
+				.combobox({
+				singleclick: true,
+				classes: ['propertytype', 'float', 'label']
+			});
 			$list.append($property);
 
 			// Hide some of the values
@@ -1560,64 +1576,6 @@ OC.Contacts = OC.Contacts || {};
 				$('body').bind('click', bodyListener);
 			});
 		});
-		$elem.find('.value.city')
-			.autocomplete({
-				source: function( request, response ) {
-					$.ajax({
-						url: 'http://ws.geonames.org/searchJSON',
-						dataType: 'jsonp',
-						data: {
-							featureClass: 'P',
-							style: 'full',
-							maxRows: 12,
-							lang: $elem.data('lang'),
-							name_startsWith: request.term
-						},
-						success: function( data ) {
-							response( $.map( data.geonames, function( item ) {
-								return {
-									label: item.name + (item.adminName1 ? ', ' + item.adminName1 : '') + ', ' + item.countryName,
-									value: item.name,
-									country: item.countryName
-								};
-							}));
-						}
-					});
-				},
-				minLength: 2,
-				select: function( event, ui ) {
-					if(ui.item && $.trim($elem.find('.value.country').val()).length === 0) {
-						$elem.find('.value.country').val(ui.item.country);
-					}
-				}
-			});
-		$elem.find('.value.country')
-			.autocomplete({
-				source: function(request, response) {
-					$.ajax({
-						url: 'http://ws.geonames.org/searchJSON',
-						dataType: 'jsonp',
-						data: {
-							/*featureClass: "A",*/
-							featureCode: 'PCLI',
-							/*countryBias: "true",*/
-							/*style: "full",*/
-							lang: lang,
-							maxRows: 12,
-							name_startsWith: request.term
-						},
-						success: function( data ) {
-							response( $.map( data.geonames, function( item ) {
-								return {
-									label: item.name,
-									value: item.name
-								};
-							}));
-						}
-					});
-				},
-				minLength: 2
-			});
 		return $elem;
 	};
 
@@ -1734,7 +1692,7 @@ OC.Contacts = OC.Contacts || {};
 				$(document).trigger('request.select.contactphoto.fromcloud', self.metaData());
 			});
 			$phototools.find('.upload').on('click', function() {
-				$(document).trigger('request.select.contactphoto.fromlocal', self.metaData());
+				$(document).trigger('request.select.contactphoto.fromlocal', self);
 			});
 			if(this.hasPhoto()) {
 				$phototools.find('.delete').show();
@@ -2587,7 +2545,7 @@ OC.Contacts = OC.Contacts || {};
 		}
 		var self = this;
 
-		return $.when(self.storage.getAddressBook(backend, addressBookId, false))
+		return $.when(self.storage.getContacts(backend, addressBookId, false))
 			.then(function(response) {
 			console.log('ContactList.loadContacts - fetching', response);
 			if(!response.error) {
@@ -2600,7 +2558,7 @@ OC.Contacts = OC.Contacts || {};
 		})
 		.fail(function(response) {
 			console.warn('Request Failed:', response.message);
-			defer.reject({error: true, message: response.message});
+			$(document).trigger('status.contacts.error', response);
 		});
 
 	};

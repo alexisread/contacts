@@ -1,6 +1,5 @@
 <?php $TRANSLATIONS = array(
 "Save" => "Vista",
-"Uploading..." => "Sendi inn ...",
 "Cancel" => "Hætta við",
 "Add" => "Bæta við",
 "Import" => "Flytja inn",
@@ -11,8 +10,6 @@
 "The uploaded file was only partially uploaded" => "Einungis hluti af innsendri skrá skilaði sér",
 "No file was uploaded" => "Engin skrá skilaði sér",
 "Missing a temporary folder" => "Vantar bráðabirgðamöppu",
-"Couldn't save temporary image: " => "Gat ekk vistað bráðabirgða mynd:",
-"File doesn't exist:" => "Skrá finnst ekki:",
 "Failed to write to disk" => "Tókst ekki að skrifa á disk",
 "Other" => "Annað",
 "Text" => "Texti",

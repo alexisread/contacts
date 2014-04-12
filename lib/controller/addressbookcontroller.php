@@ -13,12 +13,24 @@ use OCA\Contacts\App,
 	OCA\Contacts\Service\JSONResponse,
 	OCA\Contacts\Utils\JSONSerializer,
 	OCA\Contacts\Controller,
-	OCP\AppFramework\Http;
+	OCP\AppFramework\Http,
+	OCP\AppFramework\IApi,
+	OCP\IRequest;
 
 /**
  * Controller class For Address Books
  */
 class AddressBookController extends Controller {
+
+	/**
+	 * @var \OCP\AppFramework\IApi
+	 */
+	protected $api;
+
+	public function __construct($appName, IRequest $request, App $app, IApi $api) {
+		parent::__construct($appName, $request, $app);
+		$this->api = $api;
+	}
 
 	/**
 	 * @NoAdminRequired
@@ -65,6 +77,28 @@ class AddressBookController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	public function getAddressBook() {
+		$params = $this->request->urlParams;
+
+		$addressBook = $this->app->getAddressBook($params['backend'], $params['addressBookId']);
+		$lastModified = $addressBook->lastModified();
+		$response = new JSONResponse();
+		$response->setData(array('data' => $addressBook->getMetaData()));
+
+		if (!is_null($lastModified)) {
+			$response->addHeader('Cache-Control', 'private, must-revalidate');
+			$response->setLastModified(\DateTime::createFromFormat('U', $lastModified) ?: null);
+			$etag = md5($lastModified);
+			$response->setETag($etag);
+		}
+
+		return $response;
+	}
+
+	/**
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 */
+	public function getContacts() {
 		$params = $this->request->urlParams;
 
 		$addressBook = $this->app->getAddressBook($params['backend'], $params['addressBookId']);

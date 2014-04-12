@@ -1,7 +1,6 @@
 <?php $TRANSLATIONS = array(
 "Contacts" => "კონტაქტები",
 "Save" => "შენახვა",
-"Uploading..." => "მიმდინარეობს ატვირთვა...",
 "Cancel" => "უარყოფა",
 "OK" => "დიახ",
 "Add" => "დამატება",
@@ -17,6 +16,7 @@
 "No file was uploaded" => "ფაილი არ აიტვირთა",
 "Missing a temporary folder" => "დროებითი საქაღალდე არ არსებობს",
 "Failed to write to disk" => "შეცდომა დისკზე ჩაწერისას",
+"Not enough storage available" => "საცავში საკმარისი ადგილი არ არის",
 "Contact" => "კონტაქტი",
 "Other" => "სხვა",
 "Work" => "სამსახური",
@@ -36,7 +36,6 @@
 "Email" => "იმეილი",
 "Phone" => "ტელეფონი",
 "Address" => "მისამართი",
-"Add contact" => "კონტაქტის დამატება",
 "Delete current photo" => "მიმდინარე სურათის წაშლა",
 "Edit current photo" => "მიმდინარე სურათის რედაქტირება",
 "Upload new photo" => "ახალი სურათის ატვირთვა",

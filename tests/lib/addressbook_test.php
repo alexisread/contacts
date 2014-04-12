@@ -158,7 +158,7 @@ class AddressBookTest extends \PHPUnit_Framework_TestCase {
 
 		// Test get
 		$this->assertTrue(isset($this->ab['123']));
-		$this->assertInstanceOf('OCA\\Contacts\\Contact', $contact);
+		$this->assertInstanceOf('OCA\\Contacts\\Model\\Contact', $contact);
 		$this->assertEquals('Max Mustermann', $contact->getDisplayName());
 
 		// Test unset
@@ -185,7 +185,7 @@ class AddressBookTest extends \PHPUnit_Framework_TestCase {
 		$count = 0;
 
 		foreach($ab as $contact) {
-			$this->assertInstanceOf('OCA\\Contacts\\Contact', $contact);
+			$this->assertInstanceOf('OCA\\Contacts\\Model\\Contact', $contact);
 			$count += 1;
 		}
 

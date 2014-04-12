@@ -35,15 +35,18 @@ use Sabre\VObject;
  * validate and upgrade using ....
  *
  * Satisfy PHP Analyzer:
- * @property N
- * @property FN
- * @property ORG
- * @property EMAIL
- * @property VERSION
- * @property BDAY
- * @property UID
- * @property REV
- * @property CATEGORIES
+ * @property \OC\VObject\CompoundProperty N
+ * @property \OC\VObject\CompoundProperty ORG
+ * @property \OC\VObject\CompoundProperty ADR
+ * @property \OCA\Contacts\VObject\GroupProperty CATEGORIES
+ * @property \OC\VObject\StringProperty FN
+ * @property \OC\VObject\StringProperty EMAIL
+ * @property \OC\VObject\StringProperty VERSION
+ * @property \OC\VObject\StringProperty BDAY
+ * @property \OC\VObject\StringProperty UID
+ * @property \OC\VObject\StringProperty REV
+ * @property \OC\VObject\StringProperty PHOTO
+ * @property \OC\VObject\StringProperty LOGO
 */
 class VCard extends VObject\Component\VCard {
 
@@ -110,7 +113,7 @@ class VCard extends VObject\Component\VCard {
 	/**
 	* Decode properties for upgrading from v. 2.1
 	*
-	* @param Sabre_VObject_Property $property Reference to a \Sabre\VObject\Property.
+	* @param \Sabre\VObject\Property $property Reference to a \Sabre\VObject\Property.
 	* The only encoding allowed in version 3.0 is 'b' for binary. All encoded strings
 	* must therefore be decoded and the parameters removed.
 	*/
@@ -145,7 +148,7 @@ class VCard extends VObject\Component\VCard {
 	* Work around issue in older VObject sersions
 	* https://github.com/fruux/sabre-vobject/issues/24
 	*
-	* @param Sabre_VObject_Property $property Reference to a Sabre_VObject_Property.
+	* @param \Sabre\VObject\Property $property Reference to a \Sabre\VObject\Property.
 	*/
 	public function fixPropertyParameters(&$property) {
 		// Work around issue in older VObject sersions
@@ -188,9 +191,6 @@ class VCard extends VObject\Component\VCard {
 		if ($options & self::UPGRADE) {
 			$this->VERSION = self::DEFAULT_VERSION;
 			foreach($this->children as $idx => &$property) {
-				if (mb_strlen($property->value, 'utf-8') < strlen($property->value)) {
-					unset($this->children[$idx]);
-				}
 
 				$this->decodeProperty($property);
 				$this->fixPropertyParameters($property);

@@ -1,7 +1,6 @@
 <?php $TRANSLATIONS = array(
 "Contacts" => "ئالاقەداشلار",
 "Save" => "ساقلا",
-"Uploading..." => "يۈكلەۋاتىدۇ…",
 "Cancel" => "ۋاز كەچ",
 "OK" => "جەزملە",
 "Add" => "قوش",
@@ -12,6 +11,7 @@
 "No file was uploaded" => "ھېچقانداق ھۆججەت يۈكلەنمىدى",
 "Missing a temporary folder" => "ۋاقىتلىق قىسقۇچ كەم.",
 "Failed to write to disk" => "دىسكىغا يازالمىدى",
+"Not enough storage available" => "يېتەرلىك ساقلاش بوشلۇقى يوق",
 "Other" => "باشقا",
 "Work" => "ئىش",
 "Text" => "قىسقا ئۇچۇر",

@@ -13,7 +13,7 @@ namespace OCA\Contacts\Service;
 use OCA\Contacts\App;
 
 class SearchProvider extends \OC_Search_Provider{
-	function search($query) {
+	public function search($query) {
 		$unescape = function($value) {
 			return strtr($value, array('\,' => ',', '\;' => ';'));
 		};

@@ -1,3 +1,6 @@
+<?php
+use OCA\Contacts\Service\ImportManager;
+?>
 <div id="app">	
 	<div id="app-navigation" class="loading">
 		<ul id="grouplist" class="hidden-on-load">
@@ -27,6 +30,16 @@
 						<li class="import-upload">
 							<select id="import_into">
 								<option value="-1"><?php p($l->t('Import into...')); ?></option>
+							</select>
+							<select id="import_format">
+								<option value="automatic"><?php p($l->t('Automatic format')); ?></option>
+								<?php
+								$importManager = new ImportManager();
+								$types = $importManager->getTypes();
+								foreach ($types as $id => $label) {
+									echo "<option value=\"$id\">$label</option>";
+								}
+								?>
 							</select>
 							<button class="icon-upload svg tooltipped rightwards import-upload-button" title="<?php p($l->t('Select file...')); ?>"></button>
 							<input id="import_upload_start" class="tooltipped rightwards" title="<?php p($l->t('Select file...')); ?>" type="file" accept="text/vcard,text/x-vcard,text/directory" name="file" disabled />
@@ -110,17 +123,17 @@
 		</div>
 		<div id="firstrun" class="hidden">
 			<div>
-			<?php print_unescaped($l->t('<h3>You have no contacts in your address book or your address book is disabled.</h3>'
-				. '<p>Add a new contact or import existing contacts from a VCF file.</p>')) ?>
-			<div id="selections">
-				<button class="add-contact icon-plus text"><?php p($l->t('Add contact')) ?></button>
-			</div>
+				<h3><?php p($l->t('You have no contacts in your address book or your address book is disabled.')); ?></h3>
+				<p><?php p($l->t('Add a new contact or import existing contacts from a VCF file.')); ?></p>
+				<div id="selections">
+					<input type="button" class="add-contact text" value="<?php p($l->t('New contact')) ?>">
+				</div>
 			</div>
 		</div>
-		<form class="float" id="file_upload_form" action="<?php print_unescaped(OCP\Util::linkTo('contacts', 'ajax/uploadphoto.php')); ?>" method="post" enctype="multipart/form-data" target="file_upload_target">
+		<form class="float" name="file_upload_form" id="file_upload_form" method="PUT" target="file_upload_target">
 			<input type="hidden" name="requesttoken" value="<?php p($_['requesttoken']) ?>">
 			<input type="hidden" name="MAX_FILE_SIZE" value="<?php p($_['uploadMaxFilesize']) ?>" id="max_upload">
-			<input type="hidden" class="max_human_file_size" value="(max <?php p($_['uploadMaxHumanFilesize']); ?>)">
+			<input type="hidden" name="max_human_file_size" value="<?php p($_['uploadMaxHumanFilesize']); ?>">
 			<input id="contactphoto_fileupload" type="file" accept="image/*" name="imagefile" />
 		</form>
 		<iframe name="file_upload_target" id='file_upload_target' src=""></iframe>
@@ -131,13 +144,7 @@
 		class="coords"
 		method="post"
 		enctype="multipart/form-data"
-		target="crop_target"
-		action="{action}"
 		>
-		<input type="hidden" id="contactid" name="contactid" value="{contactid}" />
-		<input type="hidden" id="addressbookid" name="addressbookid" value="{addressbookid}" />
-		<input type="hidden" id="backend" name="backend" value="{backend}" />
-		<input type="hidden" id="tmpkey" name="tmpkey" value="{tmpkey}" />
 		<fieldset id="coords">
 		<input type="hidden" id="x" name="x" value="" />
 		<input type="hidden" id="y" name="y" value="" />
@@ -145,7 +152,6 @@
 		<input type="hidden" id="h" name="h" value="" />
 		</fieldset>
 	</form>
-	<iframe name="crop_target" id="crop_target" src=""></iframe>
 </script>
 
 <script id="addGroupTemplate" type="text/template">
@@ -158,7 +164,7 @@
 
 <script id="groupListItemTemplate" type="text/template">
 	<li class="group" data-type="{type}" data-id="{id}">
-		<a class="name" role="button">{name}</a>
+		<a class="name" title="{name}" role="button">{name}</a>
 		<span class="utils">
 			<a class="icon-delete action delete tooltipped rightwards"></a>
 			<a class="icon-rename action edit tooltipped rightwards"></a>
@@ -220,10 +226,10 @@
 		<li>
 			<div id="photowrapper" class="propertycontainer" data-element="photo">
 				<ul id="phototools" class="transparent hidden">
-					<li><a class="icon-delete action delete" title="<?php echo $l->t('Delete current photo'); ?>"></a></li>
-					<li><a class="icon-rename action edit" title="<?php echo $l->t('Edit current photo'); ?>"></a></li>
-					<li><a class="icon-upload action upload" title="<?php echo $l->t('Upload new photo'); ?>"></a></li>
-					<li><a class="icon-folder action cloud icon-cloud" title="<?php echo $l->t('Select photo from Files'); ?>"></a></li>
+					<li><a class="svg icon-delete action delete" title="<?php echo $l->t('Delete current photo'); ?>"></a></li>
+					<li><a class="svg icon-rename action edit" title="<?php echo $l->t('Edit current photo'); ?>"></a></li>
+					<li><a class="svg icon-upload action upload" title="<?php echo $l->t('Upload new photo'); ?>"></a></li>
+					<li><a class="svg icon-folder action cloud icon-cloud" title="<?php echo $l->t('Select photo from Files'); ?>"></a></li>
 				</ul>
 				<a class="favorite {favorite} tooltipped" title="<?php echo $l->t('Favorite'); ?>"></a>
 			</div>
@@ -308,27 +314,27 @@
 		</li>
 		<li>
 			<ul class="email propertylist hidden">
-				<h3>Email</h3>
+				<h3><?php p($l->t('Email')); ?></h3>
 			</ul>
 		</li>
 		<li>
 			<ul class="tel propertylist hidden">
-				<h3>Phone</h3>
+				<h3><?php p($l->t('Phone')); ?></h3>
 			</ul>
 		</li>
 		<li>
 			<ul class="adr propertylist hidden">
-				<h3>Address</h3>
+				<h3><?php p($l->t('Address')); ?></h3>
 			</ul>
 		</li>
 		<li>
 			<ul class="url propertylist hidden">
-				<h3>Website</h3>
+				<h3><?php p($l->t('Website')); ?></h3>
 			</ul>
 		</li>
 		<li>
 			<ul class="impp propertylist hidden">
-				<h3>Instant messaging</h3>
+				<h3><?php p($l->t('Instant messaging')); ?></h3>
 			</ul>
 		</li>
 		<li>
@@ -377,7 +383,7 @@
 			<span class="parameters">
 				<input type="checkbox" class="parameter tooltipped rightwards" data-parameter="TYPE" name="parameters[TYPE][]" value="PREF" title="<?php p($l->t('Preferred')); ?>" />
 				<select class="rtl type parameter" data-parameter="TYPE" name="parameters[TYPE][]">
-					<?php print_unescaped(OCP\html_select_options($_['email_types'], array())) ?>
+					<?php print_unescaped(OCP\html_select_options($_['emailTypes'], array())) ?>
 				</select>
 			</span>
 			<input type="email" class="nonempty value" name="value" value="{value}" x-moz-errormessage="<?php p($l->t('Please specify a valid email address.')); ?>" placeholder="<?php p($l->t('someone@example.com')); ?>" required />
@@ -392,7 +398,7 @@
 			<span class="parameters">
 				<input type="checkbox" class="parameter tooltipped rightwards" data-parameter="TYPE" name="parameters[TYPE][]" value="PREF" title="<?php p($l->t('Preferred')); ?>" />
 				<select class="rtl type parameter" data-parameter="TYPE" name="parameters[TYPE][]">
-					<?php print_unescaped(OCP\html_select_options($_['phone_types'], array())) ?>
+					<?php print_unescaped(OCP\html_select_options($_['phoneTypes'], array())) ?>
 				</select>
 			</span>
 			<input type="text" class="nonempty value" name="value" value="{value}" placeholder="<?php p($l->t('Enter phone number')); ?>" required />
@@ -406,7 +412,7 @@
 			<span class="parameters">
 				<input type="checkbox" class="parameter tooltipped rightwards" data-parameter="TYPE" name="parameters[TYPE][]" value="PREF" title="<?php p($l->t('Preferred')); ?>" />
 				<select class="rtl type parameter" data-parameter="TYPE" name="parameters[TYPE][]">
-					<?php print_unescaped(OCP\html_select_options($_['email_types'], array())) ?>
+					<?php print_unescaped(OCP\html_select_options($_['emailTypes'], array())) ?>
 				</select>
 			</span>
 			<input type="url" class="nonempty value" name="value" value="{value}" placeholder="http://www.example.com/" required />
@@ -421,7 +427,7 @@
 			<span class="parameters">
 				<input type="checkbox" id="adr_pref_{idx}" class="parameter tooltipped downwards" data-parameter="TYPE" name="parameters[TYPE][]" value="PREF" title="<?php p($l->t('Preferred')); ?>" />
 				<select class="type parameter" data-parameter="TYPE" name="parameters[TYPE][]">
-					<?php print_unescaped(OCP\html_select_options($_['impp_types'], array())) ?>
+					<?php print_unescaped(OCP\html_select_options($_['adrTypes'], array())) ?>
 				</select>
 			</span>
 			<span class="float display">
@@ -463,7 +469,7 @@
 			<span class="parameters">
 				<input type="checkbox" id="adr_pref_{idx}" class="parameter tooltipped downwards" data-parameter="TYPE" name="parameters[TYPE][]" value="PREF" title="<?php p($l->t('Preferred')); ?>" />
 				<select class="type parameter" data-parameter="TYPE" name="parameters[TYPE][]">
-					<?php print_unescaped(OCP\html_select_options($_['impp_types'], array())) ?>
+					<?php print_unescaped(OCP\html_select_options($_['imppTypes'], array())) ?>
 				</select>
 			</span>
 	-->
@@ -473,7 +479,7 @@
 			<span class="parameters">
 				<input type="checkbox" id="impp_pref_{idx}" class="parameter tooltipped downwards" data-parameter="TYPE" name="parameters[TYPE][]" value="PREF" title="<?php p($l->t('Preferred')); ?>" />
 				<select class="rtl type parameter" data-parameter="X-SERVICE-TYPE" name="parameters[X-SERVICE-TYPE]">
-					<?php print_unescaped(OCP\html_select_options($_['im_protocols'], array())) ?>
+					<?php print_unescaped(OCP\html_select_options($_['imProtocols'], array())) ?>
 				</select>
 			</span>
 			<input type="text" class="nonempty value" name="value" value="{value}"
