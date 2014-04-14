@@ -12,7 +12,7 @@ namespace OCA\Contacts\Controller;
 
 use OCA\Contacts\App,
 	OCA\Contacts\Service\JSONResponse,
-	OCA\Contacts\Controller,
+	OCA\Contacts\Controller\Controller,
 	OCA\Contacts\Service\TextDownloadResponse,
 	Sabre\VObject;
 

@@ -14,7 +14,7 @@ use OCA\Contacts\App,
 	OCA\Contacts\Service\ImageResponse,
 	OCA\Contacts\Utils\Properties,
 	OCA\Contacts\Utils\TemporaryPhoto,
-	OCA\Contacts\Controller,
+	OCA\Contacts\Controller\Controller,
 	OCP\IRequest,
 	OCP\ICache;
 

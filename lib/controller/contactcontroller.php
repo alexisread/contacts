@@ -14,7 +14,7 @@ use OCA\Contacts\App,
 	OCA\Contacts\Service\ImageResponse,
 	OCA\Contacts\Utils\JSONSerializer,
 	OCA\Contacts\Utils\Properties,
-	OCA\Contacts\Controller,
+	OCA\Contacts\Controller\Controller,
 	OCP\AppFramework\Http;
 
 /**

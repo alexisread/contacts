@@ -9,7 +9,7 @@
  * See the COPYING-README file.
  */
 
-namespace OCA\Contacts;
+namespace OCA\Contacts\Controller;
 
 use OCP\AppFramework\IAppContainer,
 	OCP\AppFramework\Controller as  BaseController,

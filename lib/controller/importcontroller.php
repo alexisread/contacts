@@ -12,7 +12,7 @@ namespace OCA\Contacts\Controller;
 
 use OCA\Contacts\App,
 	OCA\Contacts\Service\JSONResponse,
-	OCA\Contacts\Controller,
+	OCA\Contacts\Controller\Controller,
 	Sabre\VObject,
 	OCA\Contacts\VObject\VCard as MyVCard,
 	OCA\Contacts\Service\ImportManager,
