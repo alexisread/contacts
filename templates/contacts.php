@@ -1,7 +1,7 @@
 <?php
 use OCA\Contacts\Service\ImportManager;
 ?>
-<div id="app">	
+<div id="app">
 	<div id="app-navigation" class="loading">
 		<ul id="grouplist" class="hidden-on-load">
 			<li class="special">
