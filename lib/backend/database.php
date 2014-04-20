@@ -439,7 +439,7 @@ class Database extends AbstractBackend {
 			}
 
 		}
-
+		
 		return $cards;
 	}
 

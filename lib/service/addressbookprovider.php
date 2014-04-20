@@ -47,7 +47,7 @@ class AddressbookProvider implements \OCP\IAddressBook {
 
 	/**
 	 * Constructor
-	 * @param integer $id
+	 * @param AddressBook $addressBook
 	 */
 	public function __construct($addressBook) {
 		$this->addressBook = $addressBook;
