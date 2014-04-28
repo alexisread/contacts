@@ -1,7 +1,7 @@
 <?php $TRANSLATIONS = array(
 "Contacts" => "Kişiler",
 "Save" => "Kaydet",
-"Starting file import" => "Dosya aktarımına başlanıyor",
+"Starting file import" => "Dosya içe aktarımı başlıyor",
 "Format selected: {format}" => "Seçilen biçim: {format}",
 "Automatic format detection" => "Otomatik biçim tespiti",
 "Processing {count}/{total} cards" => "İşlenen {count}/{total} kart",
@@ -31,7 +31,7 @@
 "Merge contacts" => "Kişileri birleştir",
 "Cancel" => "İptal",
 "Add group" => "Grup ekle",
-"OK" => "OK",
+"OK" => "Tamam",
 "Could not find contact: {id}" => "Kişi bulunamadı: {id}",
 "Edit profile picture" => "Profil fotoğrafını düzenle",
 "Crop photo" => "Fotoğrafı kırp",

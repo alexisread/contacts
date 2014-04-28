@@ -25,12 +25,22 @@ namespace OCA\Contacts\Backend;
 use OCA\Contacts;
 
 /**
- * Subclass this class for Cantacts backends
+ * Backend class for shared address books.
  */
-
 class Shared extends Database {
 
+	/**
+	 * The name of the backend.
+	 *
+	 * @var string
+	 */
 	public $name = 'shared';
+
+	/**
+	 * The cached address books.
+	 *
+	 * @var array[]
+	 */
 	public $addressBooks = array();
 
 	/**
@@ -47,13 +57,10 @@ class Shared extends Database {
 		foreach ($maybeSharedAddressBook as $sharedAddressbook) {
 
 			if (isset($sharedAddressbook['id'])) {
-				$this->addressBooks[] = $this->getAddressBook($sharedAddressbook['id']);
+				$this->addressBooks[$sharedAddressbook['id']] = $sharedAddressbook;
+				$this->addressBooks[$sharedAddressbook['id']]['backend'] = $this->name;
 			}
 
-		}
-
-		foreach ($this->addressBooks as &$addressBook) {
-			$addressBook['backend'] = $this->name;
 		}
 
 		return $this->addressBooks;

@@ -28,34 +28,44 @@ use OCA\Contacts\Model\Contact,
 	Sabre\VObject\Reader;
 
 /**
- * Subclass this class for Contacts backends.
+ * Backend class for a users own contacts.
  */
 
 class Database extends AbstractBackend {
 
-	public $name = 'local';
 	static private $preparedQueries = array();
 
 	/**
+	 * The name of the backend.
+	 *
+	 * @var string
+	 */
+	public $name = 'local';
+
+	/**
 	 * The cached address books.
+	 *
 	 * @var array[]
 	 */
 	public $addressBooks;
 
 	/**
 	 * The table that holds the address books.
+	 *
 	 * @var string
 	 */
 	public $addressBooksTableName;
 
 	/**
 	 * The table that holds the contact vCards.
+	 *
 	 * @var string
 	 */
 	public $cardsTableName;
 
 	/**
 	 * The table that holds the indexed vCard properties.
+	 *
 	 * @var string
 	 */
 	public $indexTableName;
@@ -114,6 +124,7 @@ class Database extends AbstractBackend {
 	* {@inheritdoc}
 	*/
 	public function getAddressBook($addressBookId, array $options = array()) {
+		$owner = isset($options['shared_by']) ? $options['shared_by'] : $this->userid;
 		//\OCP\Util::writeLog('contacts', __METHOD__.' id: '
 		//	. $addressBookId, \OCP\Util::DEBUG);
 		if ($this->addressBooks && isset($this->addressBooks[$addressBookId])) {
@@ -123,7 +134,7 @@ class Database extends AbstractBackend {
 
 		// Hmm, not found. Lets query the db.
 		try {
-			$result = $this->getPreparedQuery('getaddressbook')->execute(array($addressBookId, $this->userid));
+			$result = $this->getPreparedQuery('getaddressbook')->execute(array($addressBookId, $owner));
 
 			if (\OCP\DB::isError($result)) {
 				\OCP\Util::writeLog('contacts', __METHOD__. 'DB error: '
@@ -446,17 +457,15 @@ class Database extends AbstractBackend {
 	/**
 	 * Returns a specific contact.
 	 *
-	 * The $id for Database and Shared backends can be an array containing
+	 * NOTE: The contact $id for Database and Shared backends can be an array containing
 	 * either 'id' or 'uri' to be able to play seamlessly with the
 	 * CardDAV backend.
-	 * FIXME: $addressbookid isn't used in the query, so there's no access control.
-	 * 	OTOH the groups backend - OC_VCategories - doesn't no about parent collections
-	 * 	only object IDs. Hmm.
-	 * 	I could make a hack and add an optional, not documented 'nostrict' argument
-	 * 	so it doesn't look for addressbookid.
+	 * NOTE: $addressbookid isn't always used in the query, so there's no access control.
+	 * 	This is because the groups backend - \OCP\Tags - doesn't no about parent collections
+	 * 	only object IDs. Hence a hack is made with an optional 'noCollection'.
 	 *
 	 * @param string $addressBookId
-	 * @param mixed $id Contact ID
+	 * @param string|array $id Contact ID
 	 * @param array $options - Optional (backend specific options)
 	 * @return array|null
 	 */
@@ -614,7 +623,7 @@ class Database extends AbstractBackend {
 	 * Updates a contact
 	 *
 	 * @param string $addressBookId
-	 * @param mixed $id Contact ID
+	 * @param string|array $id Contact ID
 	 * @param VCard|string $contact
 	 * @param array $options - Optional (backend specific options)
 	 * @see getContact
@@ -713,7 +722,7 @@ class Database extends AbstractBackend {
 	 * Deletes a contact
 	 *
 	 * @param string $addressBookId
-	 * @param string $id
+	 * @param string|array $id
 	 * @param array $options - Optional (backend specific options)
 	 * @see getContact
 	 * @return bool
@@ -821,14 +830,19 @@ class Database extends AbstractBackend {
 		return $one;
 	}
 
-	private function createAddressBookURI($displayname, $userid = null) {
+	/**
+	 * Create a unique URI based on the display name.
+	 *
+	 * @param string $displayName
+	 * @return string
+	 */
+	private function createAddressBookURI($displayName) {
 
-		$userid = $userid ? $userid : \OCP\User::getUser();
-		$name = str_replace(' ', '_', strtolower($displayname));
+		$name = str_replace(' ', '_', strtolower($displayName));
 
 		try {
 			$stmt = $this->getPreparedQuery('addressbookuris');
-			$result = $stmt->execute(array($userid));
+			$result = $stmt->execute(array($this->userid));
 
 			if (\OCP\DB::isError($result)) {
 				\OCP\Util::writeLog('contacts',
@@ -1018,4 +1032,9 @@ class Database extends AbstractBackend {
 
 		return self::$preparedQueries[$identifier];
 	}
+
+	public function getSearchProvider($addressbook) {
+		return new \OCA\Contacts\Service\AddressbookProvider($addressbook);
+	}
+	
 }
