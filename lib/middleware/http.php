@@ -25,7 +25,7 @@
 namespace OCA\Contacts\Middleware;
 
 use OCA\Contacts\Controller\Controller,
-	OCA\Contacts\JSONResponse,
+	OCA\Contacts\Service\JSONResponse,
 	OCP\AppFramework\Middleware,
 	OCP\AppFramework\Http\Response,
 	OCP\AppFramework\Http as HttpStatus;
