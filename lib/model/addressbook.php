@@ -167,15 +167,15 @@ class Addressbook extends AbstractPIMCollection {
 		//\OCP\Util::writeLog('contacts', __METHOD__.' id: '.$id, \OCP\Util::DEBUG);
 		if (!$this->hasPermission(\OCP\PERMISSION_READ)) {
 			throw new \Exception(
-				self::$l10n->t('You do not have permissions to see this contacts'),
+				self::$l10n->t('You do not have permissions to see this contact'),
 				Http::STATUS_FORBIDDEN
 			);
 		}
 
-		if (!isset($this->objects[$id])) {
+		if (!isset($this->objects[(string)$id])) {
 			$contact = $this->backend->getContact($this->getId(), $id);
 			if ($contact) {
-				$this->objects[$id] = new Contact($this, $this->backend, $contact);
+				$this->objects[(string)$id] = new Contact($this, $this->backend, $contact);
 			} else {
 				throw new \Exception(
 					self::$l10n->t('Contact not found'),
@@ -185,9 +185,9 @@ class Addressbook extends AbstractPIMCollection {
 		}
 
 		// When requesting a single contact we preparse it
-		if (isset($this->objects[$id])) {
-			$this->objects[$id]->retrieve();
-			return $this->objects[$id];
+		if (isset($this->objects[(string)$id])) {
+			$this->objects[(string)$id]->retrieve();
+			return $this->objects[(string)$id];
 		}
 	}
 

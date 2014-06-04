@@ -1,6 +1,9 @@
 <?php $TRANSLATIONS = array(
 "Contacts" => "Danh bạ",
+"Ok" => "Đồng ý",
+"Cancel" => "Hủy",
 "Save" => "Lưu",
+"Edit Addressbook" => "Sửa sổ địa chỉ",
 "An address book called {name} already exists" => "Danh sách địa chỉ {name} đã tồn t",
 "Failed adding address book: {error}" => "Thêm danh sách liên lạc thất bại : {error}",
 "Failed loading address books: {error}" => "Lỗi khi tải danh sách địa chỉ : {error}",
@@ -21,7 +24,6 @@
 "You have selected over 300 contacts.\nThis will most likely fail! Click here to try anyway." => "Bạn đã chọn hơn 300 địa chỉ liên lạc. \nRất có thể sẽ thất bại ! nh vào đây để thử .",
 "Error setting {name} as favorite." => "Lỗi cài đặt {name} yêu thích",
 "Merge contacts" => "Kết hợp danh sách ",
-"Cancel" => "Hủy",
 "Add group" => "Thêm nhóm",
 "OK" => "Chấp nhận",
 "Could not find contact: {id}" => "Không tìm thấy danh sách: {id}",
@@ -51,7 +53,7 @@
 "Import done" => "Thực hiện import",
 "Close" => "Đóng",
 "Failed loading photo: {error}" => "Thất bại khi tải ảnh: {error}",
-"You do not have permissions to see this contacts" => "Bạn không có quyền xem danh bạ ",
+"You do not have permissions to see this contact" => "Bạn không có quyền xem địa chỉ liên hệ này",
 "Contact not found" => "Không tìm th",
 "You do not have permissions to see these contacts" => "Bạn không có quyền xem các địa chỉ liên lạc",
 "You do not have permissions add contacts to the address book" => "Bạn không có quyền thêm địa chỉ liên l vào sổ địa chỉ",
@@ -62,7 +64,6 @@
 "The backend for this address book does not support updating" => " Sổ địa chỉ này không hỗ trợ cập nhật địa chỉ liên ",
 "You don't have permissions to delete the address book." => "Bạn không có quyền truy cập để xóa danh bạ này.",
 "Address book not found" => "Danh bạ không tìm thấy",
-"You do not have permissions to see this contact" => "Bạn không có quyền xem địa chỉ liên hệ này",
 "You do not have permissions to update this contact" => "Bạn không có quyền cập nhật địa chỉ liên hệ này",
 "Unknown IM: " => "Không biết IM:",
 "{name}'s Birthday" => "Sinh nhật của {name}",
@@ -110,6 +111,7 @@
 "Skype" => "Skype",
 "QQ" => "QQ",
 "GaduGadu" => "GaduGadu",
+"ownCloud" => "ownCloud",
 "Work" => "Công việc",
 "Home" => "Nhà",
 "Mobile" => "Di động",
@@ -185,5 +187,9 @@
 "Share" => "Chia sẻ",
 "Export" => "Xuất ra",
 "CardDAV link" => "Liên kết CardDAV ",
-"Edit" => "Sửa"
+"Edit" => "Sửa",
+"Description" => "Mô tả",
+"User" => "Người dùng",
+"Password" => "Mật khẩu",
+"Base DN" => "DN cơ bản"
 );

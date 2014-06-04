@@ -8,6 +8,7 @@
  */
 
 namespace OCA\Contacts;
+
 use \OC\AppFramework\Core\API,
 	\OCA\Contacts\Service\AddressbookProvider;
 
@@ -53,19 +54,21 @@ $api->connectHook('OC_Calendar', 'getEvents', 'OCA\Contacts\Service\Hooks', 'get
 $api->connectHook('OC_Calendar', 'getSources', 'OCA\Contacts\Service\Hooks', 'getCalenderSources');
 
 \OCP\Util::addscript('contacts', 'loader');
+\OCP\Util::addscript('contacts', 'admin');
 
 \OC_Search::registerProvider('OCA\Contacts\Service\SearchProvider');
 //\OCP\Share::registerBackend('contact', 'OCA\Contacts\Share_Backend_Contact');
 \OCP\Share::registerBackend('addressbook', 'OCA\Contacts\Share\Addressbook', 'contact');
 //\OCP\App::registerPersonal('contacts','personalsettings');
+\OCP\App::registerAdmin('contacts', 'admin');
 
 if (\OCP\User::isLoggedIn()) {
 	$app = new App($api->getUserId());
 	$addressBooks = $app->getAddressBooksForUser();
 	foreach ($addressBooks as $addressBook)  {
 		if ($addressBook->isActive()) {
-			\OCP\Contacts::registerAddressBook($addressBook->getSearchProvider());
-		}
+            \OCP\Contacts::registerAddressBook($addressBook->getSearchProvider());
+        }
 	}
 }
 

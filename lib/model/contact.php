@@ -298,7 +298,7 @@ class Contact extends \OCA\Contacts\VObject\VCard implements IPIMObject {
 			}
 		} else {
 			if (!$this->getBackend()->hasContactMethodFor(\OCP\PERMISSION_CREATE)) {
-				throw new \Exception(self::$l10n->t('This backend not support adding contacts'), 501);
+				throw new \Exception(self::$l10n->t('This backend does not support adding contacts'), 501);
 			}
 			$this->props['id'] = $this->getBackend()->createContact(
 				$this->getParent()->getId(), $this
