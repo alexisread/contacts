@@ -6,23 +6,23 @@
 # André Koot <meneer@tken.net>, 2012-2014
 # isama <bart.formosus@gmail.com>, 2011
 # bartv <transifex@thisnet.nl>, 2011
-# diederikdehaas <inactive+diederikdehaas@transifex.com>, 2012
+# Diederik <inactive+diederikdehaas@transifex.com>, 2012
 # Erik Bent <hj.bent.60@gmail.com>, 2012
-# gertvdw <gertvdw@gmail.com>, 2012
+# Gert van der Weyde <gertvdw@gmail.com>, 2012
 # Robin Appelman <icewind1991@gmail.com>, 2012
 # koenvervloesem <inactive+koenvervloesem@transifex.com>, 2012
-# Len <lenny@weijl.org>, 2013
-# Len <lenny@weijl.org>, 2012
+# Lennart Weijl <lenny@weijl.org>, 2013
+# Lennart Weijl <lenny@weijl.org>, 2012
 # Richard Bos <radoeka@gmail.com>, 2012
 # bartv <transifex@thisnet.nl>, 2012
-# translatemonkey <translator@it-dept.eu>, 2012
+# J. Rappard <translator@it-dept.eu>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: ownCloud\n"
 "Report-Msgid-Bugs-To: translations@owncloud.org\n"
-"POT-Creation-Date: 2014-06-02 00:48-0400\n"
-"PO-Revision-Date: 2014-06-02 04:48+0000\n"
-"Last-Translator: I Robot\n"
+"POT-Creation-Date: 2014-06-06 00:48-0400\n"
+"PO-Revision-Date: 2014-06-05 07:42+0000\n"
+"Last-Translator: André Koot <meneer@tken.net>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/owncloud/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -390,7 +390,7 @@ msgstr "De backend voor deze contactpersoon heeft geen ondersteuning voor bewerk
 
 #: lib/contact.php:299
 msgid "This backend does not support adding contacts"
-msgstr ""
+msgstr "Deze backend heeft geen ondersteuning voor het toevoegen van contacten"
 
 #: lib/contact.php:465 lib/contact.php:482
 msgid "Property not found"
