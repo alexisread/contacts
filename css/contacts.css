@@ -104,7 +104,7 @@
 	text-align: right;
 }
 #grouplist {
-	z-index: 100;
+	/*z-index: 100;*/
 }
 #grouplist .oc-addnew-init {
 	padding: 0 31px;
@@ -553,10 +553,6 @@ input[type=checkbox].propertytype { width: 10px; }
 .no-svg .favorite { display: inline-block; float: left; height: 20px; width: 20px;  }
 
 .svg .favorite { display: inline-block; float: left; height: 20px; width: 20px; background-size:contain; }
-
-#app-content {
-	top: 44px;
-}
 
 /* Contact layout */
 
